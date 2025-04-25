@@ -7,6 +7,17 @@ class Car:
         self.engine_volume = engine_volume
         self.color = color
         self.price = price
+    
+    def __str__(self):
+        return (f"Car(model='{self.model}', year={self.year}, manufacturer='{self.manufacturer}', "
+                f"engine_volume={self.engine_volume}, color='{self.color}', price={self.price})")
+    
+    def __eq__(self, other):
+        if not isinstance(other, Car):
+            return False
+        return (self.model == other.model and self.year == other.year and 
+                self.manufacturer == other.manufacturer and self.engine_volume == other.engine_volume)
+    
     def input_data(self):
         self.model = input("Введіть модель автомобіля: ")
         self.year = int(input("Введіть рік випуску: "))
@@ -30,10 +41,11 @@ class Car:
     def apply_discount(self, percentage):
         self.price *= (1 - percentage/100)
         print(f"Нова ціна зі знижкою {percentage}%: {self.price:.2f} грн")
+
 car1 = Car("Camry", 2018, "Toyota", 2.5, "Сірий", 25000)
-car1.display_data()
-print(f"Вік автомобіля: {car1.get_age(2023)} років")
-car1.apply_discount(10)
+car2 = Car("Camry", 2018, "Toyota", 2.5, "Чорний", 27000)
+print(car1)  
+print(f"car1 == car2: {car1 == car2}") 
 
 
 #task 2
@@ -45,6 +57,16 @@ class Book:
         self.genre = genre
         self.author = author
         self.price = price
+    
+    def __repr__(self):
+        return (f"Book(title='{self.title}', year={self.year}, publisher='{self.publisher}', "
+                f"genre='{self.genre}', author='{self.author}', price={self.price})")
+    
+    def __lt__(self, other):
+        if not isinstance(other, Book):
+            return NotImplemented
+        return self.year < other.year
+    
     def input_data(self):
         self.title = input("Введіть назву книги: ")
         self.year = int(input("Введіть рік видання: "))
@@ -52,6 +74,7 @@ class Book:
         self.genre = input("Введіть жанр: ")
         self.author = input("Введіть автора: ")
         self.price = float(input("Введіть ціну: "))
+    
     def display_data(self):
         print("\nІнформація про книгу:")
         print(f"Назва: {self.title}")
@@ -60,15 +83,18 @@ class Book:
         print(f"Жанр: {self.genre}")
         print(f"Автор: {self.author}")
         print(f"Ціна: {self.price} грн")
+    
     def is_antique(self, current_year):
         return (current_year - self.year) > 50
+    
     def increase_price(self, percentage):
         self.price *= (1 + percentage/100)
         print(f"Нова ціна після підвищення на {percentage}%: {self.price:.2f} грн")
+
 book1 = Book("Гаррі Поттер і філософський камінь", 1997, "А-БА-БА-ГА-ЛА-МА-ГА", "Фентезі", "Дж. К. Роулінг", 250)
-book1.display_data()
-print(f"Книга є антикварною: {'Так' if book1.is_antique(2023) else 'Ні'}")
-book1.increase_price(15)
+book2 = Book("1984", 1949, "Secker & Warburg", "Дитопія", "Джордж Орвелл", 300)
+print(repr(book1))
+print(f"book1 older than book2: {book1 < book2}") 
 
 
 #task 3
@@ -79,6 +105,15 @@ class Stadium:
         self.country = country
         self.city = city
         self.capacity = capacity
+    
+    def __str__(self):
+        return (f"Stadium(name='{self.name}', opening_date='{self.opening_date}', "
+                f"country='{self.country}', city='{self.city}', capacity={self.capacity})")
+    
+    def __add__(self, other):
+        if isinstance(other, int):
+            return Stadium(self.name, self.opening_date, self.country, self.city, self.capacity + other)
+        return NotImplemented
     
     def input_data(self):
         self.name = input("Введіть назву стадіону: ")
@@ -102,7 +137,8 @@ class Stadium:
     def expand_capacity(self, additional_seats):
         self.capacity += additional_seats
         print(f"Нова місткість стадіону: {self.capacity} глядачів")
+        
 stadium1 = Stadium("НСК Олімпійський", "1923-08-12", "Україна", "Київ", 70050)
-stadium1.display_data()
-print(f"Вік стадіону: {stadium1.get_age(2023)} років")
-stadium1.expand_capacity(5000)
+stadium2 = stadium1 + 5000 
+print(stadium1) 
+print(stadium2)
